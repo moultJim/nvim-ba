@@ -48,11 +48,12 @@ require('mini.tabline').setup()
 require('mini.trailspace').setup()
 require('mini.surround').setup()
 require('mini.comment').setup()
--- Add this where you load or configure your mini.nvim modules
 require('mini.misc').setup()
-require('mini.misc').setup_restore_cursor()
-
-
+MiniMisc.setup_restore_cursor()
+MiniMisc.setup_auto_root()
+MiniMisc.setup_termbg_sync()
+require('mini.animate').setup()
+require('mini.trailspace').setup()
 -- -----------------------------------------------------------
 -- Block for mini.snippets configuration in pack.lua
 -- -------------------------------------------------------
@@ -200,3 +201,29 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter" }, {
     end)
   end,
 })
+
+-- ****************************************************************************
+-- *  sniprun setup    ************
+-- ****************************************************************************
+-- Initialize sniprun
+require'sniprun'.setup({
+  -- Custom options can go here, but defaults work seamlessly out of the box
+  selected_interpreters = {},     -- Use all available interpreters
+  repl_enable = {},               -- Enabled REPL-like behaviors for supported languages
+  
+  -- The display mode for the code output (e.g., Virtual Text, Floating Window)
+  display = {
+    "Classic",                    -- Echoes in the command line
+    "VirtualTextOk",              -- Shows inline results for successful runs
+  },
+})
+
+-- Handy Keymaps for your sandbox
+-- Map to run the current line or visual selection
+vim.keymap.set('n', '<leader>ff', '<cmd>SnipRun<cr>',
+  { silent = true, desc = "Run current line" })
+vim.keymap.set('v', '<leader>ff', ':<C-U>SnipRun<cr>',
+  { silent = true, desc = "Run visual selection" })
+vim.keymap.set('n', '<leader>fc', '<cmd>SnipReset<cr>',
+  { silent = true, desc = "Reset sniprun REPL/cache" })
+
